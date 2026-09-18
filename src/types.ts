@@ -52,4 +52,18 @@ export interface ProgressMetric {
   hipThrustKg: number;
 }
 
+export interface CompletedWorkout {
+  id: string;
+  workoutId: string;
+  date: string; // YYYY-MM-DD
+  name: string;
+  category: 'strength' | 'cardio' | 'hiit' | 'yoga' | 'core';
+  durationMinutes: number;
+  calories: number;
+  exercisesCompleted: number;
+  timeOfDay: string;
+  feeling: 'Energized' | 'Strong' | 'Exhausted' | 'Restored' | 'Great';
+  notes?: string;
+}
+
 export type NavTab = 'home' | 'workouts' | 'progress' | 'plans' | 'profile';

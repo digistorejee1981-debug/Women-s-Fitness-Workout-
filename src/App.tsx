@@ -19,8 +19,9 @@ import { SettingsModal } from './components/SettingsModal';
 import { WorkoutsView } from './components/WorkoutsView';
 import { PlansView } from './components/PlansView';
 import { ProfileView } from './components/ProfileView';
-import { TODAYS_WORKOUT } from './data/mockFitnessData';
-import { NavTab, Workout } from './types';
+import { WorkoutCalendarView } from './components/WorkoutCalendarView';
+import { TODAYS_WORKOUT, COMPLETED_WORKOUTS_HISTORY } from './data/mockFitnessData';
+import { NavTab, Workout, CompletedWorkout } from './types';
 import { Smartphone, Monitor, Sparkles, Sun, Moon } from 'lucide-react';
 import { useTheme } from './context/ThemeContext';
 
@@ -33,6 +34,7 @@ export default function App() {
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(1);
   const [deviceFrame, setDeviceFrame] = useState<'mobile' | 'fluid'>('fluid');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [completedWorkouts, setCompletedWorkouts] = useState<CompletedWorkout[]>(COMPLETED_WORKOUTS_HISTORY);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -44,6 +46,22 @@ export default function App() {
   };
 
   const handleWorkoutCompleted = () => {
+    if (activeWorkoutModal) {
+      const newSession: CompletedWorkout = {
+        id: `cw-${Date.now()}`,
+        workoutId: activeWorkoutModal.id,
+        date: '2026-09-18',
+        name: activeWorkoutModal.name,
+        category: activeWorkoutModal.category,
+        durationMinutes: activeWorkoutModal.durationMinutes,
+        calories: activeWorkoutModal.calories,
+        exercisesCompleted: activeWorkoutModal.exercises?.length || 8,
+        timeOfDay: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        feeling: 'Strong',
+        notes: `Crushed ${activeWorkoutModal.name}! Consistency streak maintained.`,
+      };
+      setCompletedWorkouts((prev) => [newSession, ...prev]);
+    }
     showToast('🎉 Outstanding session logged! Streak advanced to 15 days.');
   };
 
@@ -134,13 +152,19 @@ export default function App() {
               {/* 5. Weekly Activity Chart */}
               <WeeklyActivityChart />
 
-              {/* 6. Recommended Workouts */}
+              {/* 6. Calendar View Component - Completed Workouts & Consistency */}
+              <WorkoutCalendarView
+                completedWorkouts={completedWorkouts}
+                onSelectWorkout={(w) => handleStartWorkout(w)}
+              />
+
+              {/* 7. Recommended Workouts */}
               <RecommendedWorkouts onSelectWorkout={(w) => handleStartWorkout(w)} />
 
-              {/* 7. Progress Section */}
+              {/* 8. Progress Section */}
               <ProgressSection />
 
-              {/* 8. Motivation Card */}
+              {/* 9. Motivation Card */}
               <MotivationCard />
             </div>
           )}
@@ -151,6 +175,10 @@ export default function App() {
 
           {activeTab === 'progress' && (
             <div className="space-y-6 animate-fadeIn pb-20">
+              <WorkoutCalendarView
+                completedWorkouts={completedWorkouts}
+                onSelectWorkout={(w) => handleStartWorkout(w)}
+              />
               <ProgressSection />
               <WeeklyActivityChart />
               <DailyStatsGrid />
