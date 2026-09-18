@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-poppins: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    --bg-primary: #F4F6F5;
+    --card-bg: #FFFFFF;
+    --text-primary: #343A40;
+    --text-secondary: #6B7280;
+    --border-color: #E5E7EB;
+  }
+
+  .dark {
+    --bg-primary: #0F1412;
+    --card-bg: #18201D;
+    --text-primary: #F3F7F5;
+    --text-secondary: #9EAEA6;
+    --border-color: #24322B;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+}
+
+/* Custom utility for clean horizontal scrolling without ugly scrollbars */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

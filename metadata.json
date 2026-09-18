@@ -1,0 +1,6 @@
+{
+  "name": "Women's Fitness & Workout Dashboard",
+  "description": "A sophisticated, premium Women’s Gym & Workout mobile dashboard featuring personalized daily metrics, activity charts, workout plans, and elegant progress tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
